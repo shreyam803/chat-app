@@ -40,7 +40,7 @@ io.on('connection', (socket) => {
         }
 
         io.emit('message', message);
-        callback('Delivered');
+        callback('Message Delivered');
     })
 
     socket.on('disconnect', () => {
