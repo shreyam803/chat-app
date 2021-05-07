@@ -17,8 +17,17 @@ const publicDiretorypath = path.join(__dirname, '../public');
 
 app.use(express.static(publicDiretorypath));
 
-io.on('connection',()=>{
+let message = "welcome!";
+
+io.on('connection',(socket)=>{
     console.log("New Websocket Connection.")
+
+    socket.emit("message",message)
+
+    socket.on('sendMessage',(message)=>{
+        io.emit('message',message);
+    })
+    
 })
 
 server.listen(port, () => {
