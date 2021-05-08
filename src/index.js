@@ -8,6 +8,8 @@ const Filter = require('bad-words');
 
 const path = require('path');
 
+const { generateMessage } = require('./utils/messages')
+
 
 const app = express();
 const server = http.createServer(app);
@@ -24,8 +26,8 @@ let message = "welcome!";
 io.on('connection', (socket) => {
     console.log("New Websocket Connection.")
 
-    socket.emit("message", message)
-    socket.broadcast.emit('message', 'A new user has joined..!')
+    socket.emit("message", generateMessage('Welcome!'))
+    socket.broadcast.emit('message', generateMessage('A new user has joined..!'))
 
     socket.on('sendLocation', (coords, callback) => {
         io.emit('locationMessage', `https://google.com/maps?q=${coords.latitude},${coords.longitude}`);
@@ -39,12 +41,12 @@ io.on('connection', (socket) => {
             return callback('Profanity is not allowed.')
         }
 
-        io.emit('message', message);
+        io.emit('message', generateMessage(message));
         callback('Message Delivered');
     })
 
     socket.on('disconnect', () => {
-        io.emit('message', 'A user has left.!');
+        io.emit('message', generateMessage('A user has left.!'));
     })
 })
 
