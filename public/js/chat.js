@@ -52,7 +52,7 @@ $messageForm.addEventListener('submit', (e) => {
             return console.log(error);
 
         }
-        console.log(message)
+        console.log('Message Delivered.')
     });
 })
 
@@ -66,7 +66,6 @@ $sendLocationButton.addEventListener('click', (e) => {
     $sendLocationButton.setAttribute('disabled', 'disabled');
 
     navigator.geolocation.getCurrentPosition((position) => {
-        //console.log(position);
 
         socket.emit('sendLocation', {
             latitude: position.coords.latitude,
@@ -80,4 +79,9 @@ $sendLocationButton.addEventListener('click', (e) => {
     })
 })
 
-socket.emit('join',{ username, room })
+socket.emit('join',{ username, room },()=>{
+    if(error){
+        alert(error)
+        location.href ='/'
+    }
+})
